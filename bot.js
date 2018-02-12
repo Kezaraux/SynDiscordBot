@@ -69,7 +69,11 @@
         if (checkHasRoleOrAbove(m)) {
           assignNoxusMember(m);
         }
-      } else if (mArray[1].toLowerCase() == "music") {           /* MUSIC COMMANDS */
+      } else if (mArray[1].toLowerCase() == "detilthavok") {		/* COMMAND TO REMOVE GUESTS FROM CLAN MEMBERS */
+		if (checkHasRoleOrAbove(m)) {
+			detilthavok(m);
+		}
+	  } else if (mArray[1].toLowerCase() == "music") {           /* MUSIC COMMANDS */
         if (mArray[2].toLowerCase() == "play") {
           playStream(m);
         } else if (mArray[2].toLowerCase() == "queue") {
@@ -216,6 +220,19 @@
         }
       }
     }
+  };
+  
+  const detilthavok = function(m) {
+	  const mem = m.guild.members.array();
+	  const roleToDelete = m.guild.roles.find("name", "Guest");
+	  const noxusRolesArr = ["Recruit", "Private", "Sergeant", "Lieutenant", "Captain", "General", "Section Leader", "Division Leader", "Community Leader"];
+	  for (let i = 0; i < mem.length; i++) {
+		  if (mem[i].hoistRole) {
+			  if (noxusRolesArr.indexOf(mem[i].hoistRole.name) >= 0) {
+				  mem[i].removeRole(roleToDelete).then().catch(console.error);
+			  }
+		  }
+	  }
   };
 
   const assignRole = function (m, rolename) {
